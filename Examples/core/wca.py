@@ -48,7 +48,7 @@ def wca_mean(X, k, df):
 	        pval[cluster][i] = list()
 
 	# Algorithm
-	for i in tqdm(range(int(len(X)/k)), desc='Itereations: '):
+	for i in tqdm(range(int(len(X)/k)), desc='Iterations: '):
 	    for cluster in range(k):
 
 	        # Calculating the distances from the mean vector of eaimportch cluster (in Descending order)
