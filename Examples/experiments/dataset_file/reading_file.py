@@ -46,7 +46,7 @@ def read_bodyfat():
 
 
 
-def read_HousingData():
+def read_housing():
     """
         Function to read boston housing data. 
     """
@@ -71,13 +71,16 @@ def read_abalone():
                 "shucked weight", "viscera weight", "shell weight", "rings"]
     df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data", names=column_names)
     df.rename(columns = {'rings':'target'}, inplace = True)
+    
+    # Dropping sex variable for now. Will think of using other enconding techniques later
+    df.drop('sex',axis=1,inplace=True)
     y=df['target']
     X=df.drop('target',axis=1)
     return (X,y,df)
 
 
 
-def read_comp_activ():
+def read_cpusmall():
     """
         Function to read cpusmall data. Target variable is 'usr'
     """
@@ -88,9 +91,14 @@ def read_comp_activ():
      'lwrite','scall','sread','swrite','fork','exec','rchar','wchar','runqsz','freemem','freeswap','usr'     
     ])
     df.rename(columns = {'usr':'target'}, inplace = True)
+    
+    for columns in df.columns[1:]:
+        # Changing all columns except first one as they are in format colnum:val to just val
+        df[columns] = df[columns].apply(lambda x: x.split(':')[1])
+    
     y=df['target']
     X=df.drop('target',axis=1)
-    return (X,y,df)
+    return (X.astype(np.float32),y.astype(np.float32),df.astype(np.float32))
 
 
 
@@ -104,9 +112,14 @@ def read_cadata():
     df=pd.read_csv(io.StringIO(s.decode('utf-8')),sep = ' ',names=[ 'median house value', 'median income', 'housing median age', 'total rooms', 'total bedrooms', 'population', 'households', 'latitude', 'longitude'    
     ])
     df.rename(columns = {'median house value':'target'}, inplace = True)
+    
+    for columns in df.columns[1:]:
+        # Changing all columns except first one as they are in format colnum:val to just val
+        df[columns] = df[columns].apply(lambda x: x.split(':')[1])
+    
     y=df['target']
     X=df.drop('target',axis=1)
-    return (X,y,df)
+    return (X.astype(np.float32),y.astype(np.float32),df.astype(np.float32))
 
 
 
