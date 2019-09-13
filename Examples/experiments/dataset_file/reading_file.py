@@ -4,6 +4,7 @@
 
 
 import pandas as pd
+import numpy as np
 import io
 import requests
 
@@ -33,9 +34,13 @@ def read_bodyfat():
 'Forearm circumference (cm)',
  'Wrist circumference (cm)]'])
     df.rename(columns = {'Percent body fat from Siri\'s (1956) equation':'target'}, inplace = True)    
+    for columns in df.columns[1:]:
+        # Changing all columns except first one as they are in format colnum:val to just val
+        df[columns] = df[columns].apply(lambda x: x.split(':')[1])
     y=df['target']
     X=df.drop('target',axis=1)
-    return (X,y,df)
+    # Issues with object type, so converting to float type uniformly
+    return (X.astype(np.float32),y.astype(np.float32),df.astype(np.float32))
 
 
 
